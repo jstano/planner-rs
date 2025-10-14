@@ -98,8 +98,7 @@ mod tests {
         let work_results = WorkResults::with_shifts(job_id, vec![]);
 
         assert_eq!(work_results.job_id(), job_id);
-        assert_eq!(work_results.shifts().unwrap().len(), 1);
-        // assert_eq!(work_results.shifts().unwrap()[0], "shift1");
+        assert_eq!(work_results.shifts().unwrap().len(), 0);
         assert!(work_results.labor_data().is_none());
     }
 

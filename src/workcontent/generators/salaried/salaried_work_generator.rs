@@ -85,6 +85,79 @@ impl WorkGenerator for SalariedWorkGenerator {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::any::type_name;
+    use crate::workcontent::domain::planner_model::PlannerModel;
+    use crate::workcontent::domain::location::LocationId;
+    use crate::workcontent::domain::standard_set::StandardSetId;
+    use crate::workcontent::domain::job::Job;
+    use crate::workcontent::domain::planner_settings::PlannerSettings;
+    use crate::workcontent::domain::job_shift::JobShift;
+    use date_range_rs::DateRange;
+    use joda_rs::LocalDate;
+    use std::collections::HashMap;
 
+    fn make_planner_model() -> PlannerModel {
+        let start = LocalDate::new(2025, 1, 1);
+        let end = LocalDate::new(2025, 1, 7);
+        let dates = DateRange::new(start, end);
+        let location_id = LocationId::new();
+        let standard_set_id = StandardSetId::new();
+        PlannerModel::new(dates, location_id, standard_set_id, vec![], vec![], HashMap::new())
+    }
+
+    #[test]
+    fn salaried_generator_returns_labor_data_for_each_date_with_zero_hours_when_no_shifts() {
+        let generator = SalariedWorkGenerator::new();
+        let planner_model = make_planner_model();
+        let job = Job::test();
+
+        let results = generator.generate_work(&planner_model, &job);
+
+        assert_eq!(results.job_id(), job.id());
+        assert!(results.shifts().is_none(), "Salaried generator should not return shifts");
+        let labor = results.labor_data().expect("labor_data should be Some for SalariedWorkGenerator");
+
+        let expected_days = planner_model.dates().iter().count();
+        assert_eq!(labor.len(), expected_days);
+
+        // All hours should be zero because there are no shifts
+        assert!(labor.iter().all(|ld| ld.hours() == 0.0));
+    }
+
+    #[test]
+    fn salaried_generator_sums_zero_hours_when_shifts_have_no_details() {
+        let generator = SalariedWorkGenerator::new();
+        let mut planner_model = make_planner_model();
+        let std_set = planner_model.standard_set_id();
+
+        // Build a couple of shifts under the same standard set but with no definitions => no details on any date
+        let shift1 = JobShift::new(
+            crate::workcontent::domain::job::JobId::new(),
+            std_set,
+            "Shift 1".to_string(),
+            1,
+            vec![],
+        );
+        let shift2 = JobShift::new(
+            crate::workcontent::domain::job::JobId::new(),
+            std_set,
+            "Shift 2".to_string(),
+            2,
+            vec![],
+        );
+
+        let job = Job::new(
+            LocationId::new(),
+            PlannerSettings::default(),
+            vec![shift1, shift2],
+            vec![], // no salaried standards associated
+        );
+
+        let results = generator.generate_work(&planner_model, &job);
+        let labor = results.labor_data().expect("labor_data should be present");
+
+        // Expect one entry per planner date and all zeros because no shift details exist
+        let expected_days = planner_model.dates().iter().count();
+        assert_eq!(labor.len(), expected_days);
+        assert!(labor.iter().all(|ld| ld.hours() == 0.0));
+    }
 }

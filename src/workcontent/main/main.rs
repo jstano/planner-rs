@@ -41,11 +41,11 @@ mod tests {
         let standard_set = StandardSet::new(StandardSetId::new());
         let planner_model = PlannerModel::new(dates, location.id(), standard_set.id(), vec![], vec![], HashMap::new());
         let results = generate_work_content(planner_model);
-        assert!(!results.is_empty());
+        assert!(results.is_empty());
     }
 
     #[test]
-    fn should_generate_empty_work_content_if_one_job() {
+    fn should_generate_work_content_if_one_job() {
         let dates = DateRange::new(
             LocalDate::new(2025, 10, 1),
             LocalDate::new(2025, 10, 31),
@@ -54,6 +54,6 @@ mod tests {
         let standard_set = StandardSet::new(StandardSetId::new());
         let planner_model = PlannerModel::new(dates, location.id(), standard_set.id(), vec![Job::test()], vec![], HashMap::new());
         let results = generate_work_content(planner_model);
-        assert!(!results.is_empty());
+        assert_eq!(results.len(), 1);
     }
 }
