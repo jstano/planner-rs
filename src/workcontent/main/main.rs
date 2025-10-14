@@ -1,14 +1,14 @@
 use crate::workcontent::domain::planner_model::PlannerModel;
 use crate::workcontent::generators::work_generators;
-use crate::workcontent::generators::work_generators::WorkResults;
+use crate::workcontent::generators::work_generators::{WorkGenerator, WorkGeneratorKind, WorkResults};
 
 pub fn generate_work_content(planner_model: PlannerModel) -> Vec<WorkResults> {
     planner_model
         .jobs()
         .iter()
         .map(|job| {
-            let work_generator = work_generators::create(job.planner_settings().standard_type);
-            work_generator.generate_work(&planner_model, job)
+            let work_generator_kind: WorkGeneratorKind = job.planner_settings().standard_type.into();
+            work_generator_kind.generate_work(&planner_model, job)
         })
         .collect()
 }

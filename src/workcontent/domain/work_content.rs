@@ -2,7 +2,7 @@ use joda_rs::{LocalDate, LocalDateTime};
 use uuid::Uuid;
 use crate::id_type;
 use crate::workcontent::domain::job::JobId;
-use crate::workcontent::domain::plan_type::PlanType;
+use crate::workcontent::domain::planned_shift_type::PlannedShiftType;
 use crate::workcontent::domain::location::{Location, LocationId};
 
 id_type!(WorkContentId, uuid_v4);
@@ -12,7 +12,7 @@ pub struct WorkContent {
     id: WorkContentId,
     job_id: JobId,
     property_id: LocationId,
-    shift_type: PlanType,
+    shift_type: PlannedShiftType,
     shift_date: LocalDate,
     earliest_start_date_time: LocalDateTime,
     preferred_start_date_time: LocalDateTime,
@@ -32,7 +32,7 @@ impl WorkContent {
     pub fn new(
         job_id: JobId,
         property_id: LocationId,
-        shift_type: PlanType,
+        shift_type: PlannedShiftType,
         shift_date: LocalDate,
         earliest_start_date_time: LocalDateTime,
         preferred_start_date_time: LocalDateTime,
@@ -71,7 +71,7 @@ impl WorkContent {
     pub fn id(&self) -> WorkContentId { self.id }
     pub fn job_id(&self) -> JobId { self.job_id }
     pub fn property_id(&self) -> LocationId { self.property_id }
-    pub fn shift_type(&self) -> PlanType { self.shift_type }
+    pub fn shift_type(&self) -> PlannedShiftType { self.shift_type }
     pub fn shift_date(&self) -> LocalDate { self.shift_date }
     pub fn earliest_start_date_time(&self) -> LocalDateTime { self.earliest_start_date_time }
     pub fn preferred_start_date_time(&self) -> LocalDateTime { self.preferred_start_date_time }

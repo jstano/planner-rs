@@ -1,6 +1,5 @@
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum ShiftSource {
+pub enum PlannedShiftSource {
     Auto,
-    Manual,
-    Rule
+    Manual
 }

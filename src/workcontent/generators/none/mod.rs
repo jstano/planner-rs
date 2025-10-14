@@ -1,1 +1,1 @@
-pub mod none;
+pub mod none_work_generator;

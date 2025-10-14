@@ -3,21 +3,14 @@ use joda_rs::constants::MONTHS_PER_YEAR;
 use crate::workcontent::domain::salaried_standard::SalariedStandard;
 use crate::workcontent::domain::salary_mode::SalaryMode;
 
-pub trait SalariedCalculator {
-    fn calculate_hours(&self, standard: &SalariedStandard, date: LocalDate) -> f64;
-}
+pub struct SalariedCalculator;
 
-pub struct SalariedCalculatorImpl;
-
-impl SalariedCalculatorImpl {
+impl SalariedCalculator {
     pub fn new() -> Self {
-        Self {
-        }
+        Self {}
     }
-}
 
-impl SalariedCalculator for SalariedCalculatorImpl {
-    fn calculate_hours(&self, standard: &SalariedStandard, date: LocalDate) -> f64 {
+    pub fn calculate_hours(&self, standard: &SalariedStandard, date: LocalDate) -> f64 {
         match standard.salary_mode {
             SalaryMode::WEEKLY => monthly_hours(standard, date),
             SalaryMode::MONTHLY => weekly_hours(standard, date),

@@ -1,1 +1,1 @@
-pub mod advanced;
+pub mod advanced_work_generator;
