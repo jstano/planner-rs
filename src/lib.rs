@@ -2,7 +2,7 @@
 #![allow(unused_variables)]
 #![allow(dead_code)]
 
-mod workcontent;
+pub mod workcontent;
 
 pub fn add(left: u64, right: u64) -> u64 {
     left + right

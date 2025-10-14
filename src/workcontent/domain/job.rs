@@ -34,8 +34,8 @@ impl Job {
         self.id
     }
 
-    pub fn planner_settings(&self) -> PlannerSettings {
-        PlannerSettings::default()
+    pub fn planner_settings(&self) -> &PlannerSettings {
+        &self.planner_settings
     }
 
     pub fn shifts(&self) -> &[JobShift] {
