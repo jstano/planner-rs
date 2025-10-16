@@ -4,13 +4,18 @@ use crate::workcontent::domain::job_shift::JobShift;
 use crate::workcontent::domain::planned_shift::PlannedShift;
 use crate::workcontent::domain::planner_model::PlannerModel;
 use crate::workcontent::domain::standard_type::StandardType::BASIC;
+use crate::workcontent::generators::basic::basic_standards_processor::BasicStandardsProcessor;
 use crate::workcontent::generators::work_generators::{WorkGenerator, WorkResults};
 
-pub struct BasicWorkGenerator;
+pub struct BasicWorkGenerator {
+    standards_processor: BasicStandardsProcessor
+}
 
 impl BasicWorkGenerator {
     pub fn new() -> Self {
-        Self {}
+        Self {
+            standards_processor: BasicStandardsProcessor::new()
+        }
     }
 
     fn has_shift_on_date(shift: &JobShift, date: LocalDate) -> bool {

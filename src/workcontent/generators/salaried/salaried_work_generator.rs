@@ -126,7 +126,7 @@ mod tests {
     #[test]
     fn salaried_generator_sums_zero_hours_when_shifts_have_no_details() {
         let generator = SalariedWorkGenerator::new();
-        let mut planner_model = make_planner_model();
+        let planner_model = make_planner_model();
         let std_set = planner_model.standard_set_id();
 
         // Build a couple of shifts under the same standard set but with no definitions => no details on any date

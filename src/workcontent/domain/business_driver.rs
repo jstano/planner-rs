@@ -28,3 +28,19 @@ impl BusinessDriver {
         self.location_id
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn business_driver_new_and_getters_work() {
+        let id = BusinessDriverId::new();
+        let location_id = LocationId::new();
+
+        let bd = BusinessDriver::new(id, location_id);
+
+        assert_eq!(bd.id(), id);
+        assert_eq!(bd.location_id(), location_id);
+    }
+}
